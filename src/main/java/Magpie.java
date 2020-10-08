@@ -45,11 +45,23 @@ public class Magpie
         else if (statement.indexOf("dog") >= 0 || statement.indexOf("cat") >= 0){
             response = "Tell me more about your pets.";
         }
-        else if (statement.indexOf("Nathan") >= 0){
+        else if (statement.indexOf("Mr.") >= 0){
             response = "He sounds like a good teacher. ";
         }
+        else if (statement.indexOf("Ms.") >= 0 || statement.indexOf("Mrs.") >= 0){
+            response = "She sounds like a good teacher.";
+        } 
         else if (statement.trim().length() == 0){
             response = "Say something, please."; 
+        }
+        else if (statement.indexOf("Ice cream") >= 0 || statement.indexOf("Cake") >= 0){
+            response = "Ooo I love dessert, that sounds good.";
+        }
+        else if (statement.indexOf("Soccer") >= 0 || statement.indexOf("Swimming") >= 0){
+            response = "I know someone who played that sport!";
+        }
+        else if (statement.indexOf("Black") >= 0 || statement.indexOf("Pink") >= 0){
+            response = "I love that color!";
         }
         else
         {
@@ -84,6 +96,14 @@ public class Magpie
         else if (whichResponse == 3)
         {
             response = "You don't say.";
+        } 
+        else if (whichResponse == 4){
+
+            response = "That's cool...";
+        }
+        else if (whichResponse == 5){
+
+            response = "Sorry, I don't understand exactly.";
         }
     
         return response;
@@ -99,7 +119,27 @@ public class Magpie
     // The method returns the index of the first character in word
     // if it is found, and returns -1 otherwise. 
     public int findWord(String str, String word) {
-        return -1;
+        str = str.toLowerCase();
+        word = word.toLowerCase();
+        int idx1 = str.indexOf(word);
+        int length= word.length();
+        
+        if (str.indexOf(word) == 0){
+            if (str.charAt(idx1 + length) == 32){
+                return idx1;
+            }
+            else {
+            return -1;
+            }
+        }
+        else {
+            if (str.charAt(idx1 - 1) == 32 || str.charAt(idx1 + length) == 32){
+            return idx1;
+            }
+            else{
+            return -1;
+            }   
+        }
     }
 
     
