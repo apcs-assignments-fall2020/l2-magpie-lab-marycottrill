@@ -30,6 +30,8 @@ public class Magpie
      */
     public String getResponse(String statement)
     {
+        int youfind2 = findWord(statement, "you");
+        int ifind = findWord(statement, "I");
         String response = "";
         if (statement.indexOf("no") >= 0)
         {
@@ -63,8 +65,15 @@ public class Magpie
         else if (statement.indexOf("Black") >= 0 || statement.indexOf("Pink") >= 0){
             response = "I love that color!";
         }
-        else
-        {
+        else if (youfind2 >= 0 && findWord(statement, "me") >= 0) {
+			response = transformYouMeStatement(statement);
+        } else if (ifind >= 0 && findWord(statement, "you") >= 0) {
+            response = transformIYouStatement(statement);
+		} else if (findWord(statement, "I want to") >= 0) {
+			response = transformIWantToStatement(statement);
+		} else if (findWord(statement, "I want") >= 0) {
+            response = transformIWantStatement(statement);
+        } else {
             response = getRandomResponse();
         }
         return response;
@@ -119,27 +128,11 @@ public class Magpie
     // The method returns the index of the first character in word
     // if it is found, and returns -1 otherwise. 
     public int findWord(String str, String word) {
-        str = str.toLowerCase();
-        word = word.toLowerCase();
-        int idx1 = str.indexOf(word);
-        int length= word.length();
         
-        if (str.indexOf(word) == 0){
-            if (str.charAt(idx1 + length) == 32){
-                return idx1;
-            }
-            else {
-            return -1;
-            }
-        }
-        else {
-            if (str.charAt(idx1 - 1) == 32 || str.charAt(idx1 + length) == 32){
-            return idx1;
-            }
-            else{
-            return -1;
-            }   
-        }
+        str = " " + str.toLowerCase() + " ";
+        word = " " + word.toLowerCase() + " ";
+
+    return str.indexOf(word);
     }
 
     
@@ -153,8 +146,14 @@ public class Magpie
      */
     public String transformIWantStatement(String statement)
     {
-        //your code here
-        return "";
+		statement = statement.trim();
+		String lastchar = statement.substring(statement.length() - 1);
+		if (lastchar.equals(".") || lastchar.equals("!")){
+			statement = statement.substring(0, statement.length() - 1);
+		}
+		int find = findWord(statement, "I want");
+		String finalstatement = statement.substring(find + 7).trim();
+		return "Would you really be happy if you had " + finalstatement + "?";
     }
 
     /**
@@ -163,11 +162,20 @@ public class Magpie
      * @param statement the user statement, assumed to contain "I" followed by "you"
      * @return the transformed statement
      */
-    public String transformIYouStatement(String statement)
-    {
-        //your code here
-        return "";
-    }
+    public String transformIYouStatement(String statement){
+        
+        statement = statement.trim();
+		String lastchar = statement.substring(statement.length() - 1);
+		if (lastchar.equals(".")){
+			statement = statement.substring(0, statement.length() - 1);
+		}
+
+		int youfinal = findWord(statement, "I");
+		int mefinal = findWord(statement, "you");
+
+		String finalstatement = statement.substring(youfinal + 1, mefinal).trim();
+		return "Why do you " + finalstatement + " me?";
+	}
 
     /**
      * Take a statement with "I want to <something>." and transform it into 
@@ -177,10 +185,15 @@ public class Magpie
      */
     public String transformIWantToStatement(String statement)
     {
-        // your code here
-        return "";
+		statement = statement.trim();
+		String lastchar = statement.substring(statement.length() - 1);
+		if (lastchar.equals(".") || lastchar.equals("!")){
+			statement = statement.substring(0, statement.length() - 1);
+		}
+		int find = findWord(statement, "I want to");
+		String finalstatement = statement.substring(find + 9).trim();
+		return "What would it mean to " + finalstatement + "?";
     }
-
 
 
 
@@ -192,7 +205,16 @@ public class Magpie
      */
     public String transformYouMeStatement(String statement)
     {
-        // your code here
-        return "";
+		statement = statement.trim();
+		String lastchar = statement.substring(statement.length() - 1);
+		if (lastchar.equals(".")){
+			statement = statement.substring(0, statement.length() - 1);
+		}
+
+		int youfind = findWord(statement, "you");
+		int mefind = findWord(statement, "me");
+
+		String finalstatement = statement.substring(youfind + 3, mefind).trim();
+		return "What makes you think that I " + finalstatement + " you?";
     }
 }
